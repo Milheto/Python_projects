@@ -1,4 +1,4 @@
-import random as r
+import random as rd
 
 def exibeApresentacaoJogo():
     print('***' + 52*' ' + '***')
@@ -6,49 +6,35 @@ def exibeApresentacaoJogo():
     print('***'+9*' ' +'Vence quem retirar o último bastão' + 9*' ' + '***')
     print('***'+22*' ' +'Boa Sorte!!!' + 18*' ' + '***')
     print('***' + 52*' ' + '***')
-    
+    return
+
 def geraListaBastoes():
-    qtdGrupos = r.randint(3,6)
-    l = []
-    for i in range(qtdGrupos):
-        a = r.randint(1,7)
-        l.append(a)
-        
+    l = []  
+    for el in range(rd.randint(3,6)):
+        l.append(rd.randint(1,7))
     return l
 
 def exibeBastoes(l):
-    for i,el in enumerate(l):
-        print(f'Grupo {i + 1}: ',end='')
-        for el in range(el):
-            print(chr(9608),end = ' ')
-        
-        print('\n')
-        
-def umaJogada(l,p):
-    g = int(input(f'Jogador {p + 1}, de qual grupo que voce deseja remover?'))
-    q = int(input('Quantos bastões desse grupo voce deseja remover?'))
-    g -= 1
-    l[g] = l[g] - q
+    for el in range(len(l)):
+        print(f'\n\nGrupo {el + 1}:', end = '  ')               
+        for el2 in range(l[el]):
+            print(f'{chr(9608)}', end = ' ')
+    return        
+                      
+def umaJogada(l,jogador):
+    j = int(input(f'\n\nJogador {jogador + 1}, de qual grupo deseja retirar os bastoes?'))
+    j1 = int(input('Quantos bastoes deseja retirar?'))
+    l[j-1] -= j1
     return sum(l) == 0
-
-def game(l,p):
-    exibeBastoes(l)
-         
-    a = umaJogada(l, p)   
-        
-    if a != True:
-        
-        p = (p+1) % 2
-        
-        game(l,p)
-    else:
-        
-        print(f'Jogador {p+1} Ganhou!')
     
-
-
-    
-exibeApresentacaoJogo()
-p = 0
 l = geraListaBastoes()
-game(l,p)
+
+exibeApresentacaoJogo()
+exibeBastoes(l)
+jogador = 0
+
+while umaJogada(l,jogador) != True:
+    jogador = (jogador + 1) % 2
+    exibeBastoes(l)
+    
+print(f'\nO jogador {jogador+1} Ganhou!')
